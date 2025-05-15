@@ -21,7 +21,7 @@ Try the app live here:
 Clone the repo using SSH:  
 ```bash
 git clone git@github.com:AnuradhaHariharan/Gravatar-Based-User-Profile-Card.git
-cd Gravatar-Based-User-Profile-Card
+cd profile-app
 npm install
 npm start
 
