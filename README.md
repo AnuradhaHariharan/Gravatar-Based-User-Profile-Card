@@ -26,7 +26,7 @@ npm install
 npm start
 
 ---
-
+```
 ## How it Works
 
 1. User fills out the profile form (email, name, username, location, bio, etc).
