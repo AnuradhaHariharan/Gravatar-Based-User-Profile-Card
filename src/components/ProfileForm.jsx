@@ -30,6 +30,7 @@ export default function ProfileForm({ onSubmit }) {
         `https://gravatar-backend.onrender.com/gravatar/${hash}`
       );
       const entry = data?.entry?.[0] || {};
+      console.log(entry)
       onSubmit({
         ...formData,
         gravatar: {
