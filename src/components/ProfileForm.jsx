@@ -24,7 +24,7 @@ export default function ProfileForm({ onSubmit }) {
 
     setError("");
     const hash = md5(emailTrimmed);
-
+    console.log(hash)
     try {
       const { data } = await axios.get(
         `https://gravatar-backend.onrender.com/gravatar/${hash}`
@@ -33,7 +33,7 @@ export default function ProfileForm({ onSubmit }) {
       onSubmit({
         ...formData,
         gravatar: {
-          image: `https://www.gravatar.com/avatar/${hash}`,
+          image: entry.photos[0].value,
           username: entry.displayName || username,
           location: entry.currentLocation || entry.location || location,
           bio: entry.aboutMe || bio,
