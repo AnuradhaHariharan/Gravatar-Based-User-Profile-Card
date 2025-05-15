@@ -1,0 +1,25 @@
+.navbar {
+    background-color: #4ab6a3; /* deep purple */
+    color: black;
+    padding: 0 2rem;
+    height: 3.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+.navbar-profile-image{
+  height: 1.5rem;
+  border-radius: 30px;
+}
+.profile-info{
+ display: flex;
+ gap: 5px;
+align-items: center;
+}
+.navbar-logo{
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+  
