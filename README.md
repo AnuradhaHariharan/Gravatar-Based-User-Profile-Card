@@ -14,7 +14,7 @@ This project is a React app built with [Create React App](https://github.com/fac
 ## Live Demo
 
 Try the app live here:  
-[https://your-deployment-url.com](https://gravatar-based-user-profile-card.onrender.com/)
+[Live](https://gravatar-based-user-profile-card.onrender.com/)
 
 ## Clone Repository
 
