@@ -1,3 +1,4 @@
+
 export default function ProfileCard({ profile }) {
     const { fullName, email, phone, website, gravatar } = profile;
   
