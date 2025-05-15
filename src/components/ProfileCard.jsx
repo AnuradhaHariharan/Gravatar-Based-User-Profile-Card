@@ -9,12 +9,12 @@ export default function ProfileCard({ profile }) {
         <p>{profile.gravatar.location || profile.location}</p>
         {profile.gravatar.jobTitle && <p>Job Title: {profile.gravatar.jobTitle}</p>}
         {profile.gravatar.organization && <p>Organization: {profile.gravatar.organization}</p>}
-        <p>Phone: {profile.phone}</p>
-        <p>Email: {profile.email}</p>
+        <p> {profile.phone}</p>
+        <p> {profile.email}</p>
         <p>{profile.gravatar.bio || profile.bio}</p>
         {profile.website && (
           <a href={profile.website} target="_blank" rel="noopener noreferrer">
-            Visit Website / Social Profile
+            social Profile
           </a>
         )}
       </div>

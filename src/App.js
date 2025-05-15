@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 style={{ textAlign: "center" }}>Gravatar Profile Card</h1>
+      <h1>Gravatar Profile Card</h1>
       {!profile ? <ProfileForm onSubmit={setProfile} /> : <ProfileCard profile={profile} />}
     </div>
   );

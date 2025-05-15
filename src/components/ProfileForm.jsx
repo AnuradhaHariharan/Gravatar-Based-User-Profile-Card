@@ -1,48 +1,52 @@
 import { useState } from "react";
 import axios from "axios";
 import md5 from "blueimp-md5";
+import validator from "validator";
 
 export default function ProfileForm({ onSubmit }) {
   const [formData, setFormData] = useState({
-    email: "",
-    fullName: "",
-    username: "",
-    phone: "",
-    location: "",
-    website: "",
-    bio: ""
+    email: "", fullName: "", username: "", phone: "",
+    location: "", website: "", bio: ""
   });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) =>
+  const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const emailHash = md5(formData.email.trim().toLowerCase());
+    const { email, username, location, bio } = formData;
+    const emailTrimmed = email.trim().toLowerCase();
+
+    if (!validator.isEmail(emailTrimmed)) {
+      return setError("Invalid email address.");
+    }
+
+    setError("");
+    const hash = md5(emailTrimmed);
 
     try {
-      const res = await axios.get(`http://localhost:4000/gravatar/${emailHash}`);
-      const data = res.data;
-      const entry = data.entry[0];
-
+      const { data } = await axios.get(
+        `https://gravatar-backend.onrender.com/gravatar/${hash}`
+      );
+      const entry = data?.entry?.[0] || {};
       onSubmit({
         ...formData,
         gravatar: {
-          image: `https://www.gravatar.com/avatar/${emailHash}`,
-          username: entry.displayName || formData.username,
-          location: entry.currentLocation || entry.location || formData.location,
-          bio: entry.aboutMe || formData.bio,
+          image: `https://www.gravatar.com/avatar/${hash}`,
+          username: entry.displayName || username,
+          location: entry.currentLocation || entry.location || location,
+          bio: entry.aboutMe || bio,
         },
       });
-    } catch (error) {
-      console.warn("Using fallback Gravatar profile:", error.message);
+    } catch {
       onSubmit({
         ...formData,
         gravatar: {
-          image: `https://www.gravatar.com/avatar/${emailHash}?d=mp`,
-          username: formData.username,
-          location: formData.location,
-          bio: formData.bio,
+          image: `https://www.gravatar.com/avatar/${hash}?d=mp`,
+          username,
+          location,
+          bio,
         },
       });
     }
@@ -50,50 +54,20 @@ export default function ProfileForm({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="fullName"
-        placeholder="Full Name"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone Number"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="location"
-        placeholder="Location (City, Country)"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="url"
-        name="website"
-        placeholder="Website / Social URL"
-        onChange={handleChange}
-      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {["email", "fullName", "username", "phone", "location", "website"].map((field) => (
+        <input
+          key={field}
+          type={field === "email" ? "email" : field === "website" ? "url" : "text"}
+          name={field}
+          placeholder={field[0].toUpperCase() + field.slice(1)}
+          required={["email", "fullName", "username", "phone", "location"].includes(field)}
+          onChange={handleChange}
+        />
+      ))}
       <textarea
         name="bio"
-        placeholder="Bio / Short Description"
+        placeholder="Bio"
         rows="3"
         onChange={handleChange}
       ></textarea>
