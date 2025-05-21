@@ -7,13 +7,16 @@ import Footer from "./components/Footer";
 
 function App() {
   const [profile, setProfile] = useState(null);
+  const [reset,setReset]=useState(false);
+  const [resetValues,setResetValues]=useState(null);
 
   return (
     <div>
       <Navbar profile={profile}/>
     <div className="container">
       <h1>Gravatar Profile Card</h1>
-      {!profile ? <ProfileForm onSubmit={setProfile} /> : <ProfileCard profile={profile} />}
+      {!profile||reset ? <ProfileForm setProfile={setProfile} setReset={setReset} reset={reset} setResetValues={setResetValues} profile={profile}/>
+      : <ProfileCard profile={profile} setReset={setReset} resetValues={resetValues} />}
     </div>
     <Footer/>
     </div>

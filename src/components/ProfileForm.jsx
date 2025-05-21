@@ -1,13 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import md5 from "blueimp-md5";
 import validator from "validator";
 
-export default function ProfileForm({ onSubmit }) {
+export default function ProfileForm({ setProfile,setReset ,reset,profile,setResetValues}) {
   const [formData, setFormData] = useState({
     email: "", fullName: "", username: "", phone: "",
     location: "", website: "", bio: ""
   });
+ 
+  useEffect(() => {
+    if (reset) {
+      const newFormData = {
+        email: profile.email,
+        fullName: profile.gravatar?.fullName || profile.fullName,
+        username: profile.gravatar?.username || profile.username,
+        phone: profile.phone,
+        location: profile.gravatar?.location || profile.location,
+        website: profile.website || "",
+        bio: profile.gravatar?.bio || profile.bio,
+      };
+      console.log("Setting formData and resetValues:", newFormData);
+      setFormData(newFormData);
+    }
+  }, [reset]);
+  
+
+
+
   const [error, setError] = useState("");
 
   const handleChange = e =>
@@ -31,7 +51,7 @@ export default function ProfileForm({ onSubmit }) {
       );
       const entry = data?.entry?.[0] || {};
       console.log(entry)
-      onSubmit({
+      setProfile({
         ...formData,
         gravatar: {
           image: entry.photos[0].value,
@@ -41,7 +61,7 @@ export default function ProfileForm({ onSubmit }) {
         },
       });
     } catch {
-      onSubmit({
+      setProfile({
         ...formData,
         gravatar: {
           image: `https://www.gravatar.com/avatar/${hash}?d=mp`,
@@ -51,6 +71,9 @@ export default function ProfileForm({ onSubmit }) {
         },
       });
     }
+    console.log(formData);
+  reset?setResetValues(formData):setResetValues(null);
+    setReset(false);
   };
 
   return (
@@ -64,6 +87,7 @@ export default function ProfileForm({ onSubmit }) {
           placeholder={field[0].toUpperCase() + field.slice(1)}
           required={["email", "fullName", "username", "phone", "location"].includes(field)}
           onChange={handleChange}
+          value={formData[field] || ""} 
         />
       ))}
       <textarea
@@ -71,8 +95,11 @@ export default function ProfileForm({ onSubmit }) {
         placeholder="Bio"
         rows="3"
         onChange={handleChange}
+        value={formData.bio || ""} 
       ></textarea>
-      <button type="submit">Generate Profile</button>
+      {!reset?
+      <button type="submit">Generate Profile</button>:  <button type="submit">Reset</button>
+     }
     </form>
   );
 }
