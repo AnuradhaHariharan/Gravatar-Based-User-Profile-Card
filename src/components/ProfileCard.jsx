@@ -30,7 +30,7 @@ export default function ProfileCard({ profile, setReset, resetValues }) {
         </a>
       )}
       <div className="reset-container">
-        <button onClick={() => setReset(true)}>Reset</button>
+        <button onClick={() => setReset(true)}>Edit</button>
       </div>
     </div>
   );

@@ -98,7 +98,7 @@ export default function ProfileForm({ setProfile,setReset ,reset,profile,setRese
         value={formData.bio || ""} 
       ></textarea>
       {!reset?
-      <button type="submit">Generate Profile</button>:  <button type="submit">Reset</button>
+      <button type="submit">Generate Profile</button>:  <button type="submit">Edit</button>
      }
     </form>
   );
